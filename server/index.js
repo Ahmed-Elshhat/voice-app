@@ -226,7 +226,11 @@ io.on("connection", (socket) => {
     socket.join(roomId);
 
     if (!rooms[roomId]) rooms[roomId] = {};
-    rooms[roomId][socket.id] = { name: userName || "Guest", micEnabled: true, speaking: false };
+    rooms[roomId][socket.id] = {
+      name: userName || "Guest",
+      micEnabled: true,
+      speaking: false,
+    };
 
     // send everyone the updated list
     const userList = Object.entries(rooms[roomId]).map(([id, info]) => ({
@@ -238,9 +242,11 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("users-in-room", userList);
 
     // Notify existing users only that new user joined (their socket ids)
-    const otherIds = Object.keys(rooms[roomId]).filter(id => id !== socket.id);
+    const otherIds = Object.keys(rooms[roomId]).filter(
+      (id) => id !== socket.id
+    );
     socket.emit("all-users", otherIds);
-    otherIds.forEach(id => {
+    otherIds.forEach((id) => {
       io.to(id).emit("user-joined", socket.id);
     });
 
@@ -280,7 +286,10 @@ io.on("connection", (socket) => {
   socket.on("speaking", ({ speaking, roomId }) => {
     if (!rooms[roomId] || !rooms[roomId][socket.id]) return;
     rooms[roomId][socket.id].speaking = !!speaking;
-    io.to(roomId).emit("user-speaking", { userId: socket.id, speaking: !!speaking });
+    io.to(roomId).emit("user-speaking", {
+      userId: socket.id,
+      speaking: !!speaking,
+    });
   });
 
   socket.on("disconnect", () => {
@@ -302,7 +311,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("ping-check", () => socket.emit("pong-check"));
-
 });
 
 const PORT = 5000;
