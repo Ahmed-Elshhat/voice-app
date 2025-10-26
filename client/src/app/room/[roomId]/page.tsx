@@ -1258,7 +1258,8 @@ import "./RoomPage.scss";
  */
 
 /* -------------------- config -------------------- */
-const SOCKET_URL = "http://localhost:5000";
+// const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = "https://voice-backend-production-e638.up.railway.app/";
 const RECONNECT_INTERVAL_MS = 5000; // retry every 5s for banner display (socket.io also tries)
 const STATS_INTERVAL_MS = 1000; // how often we sample getStats()
 
